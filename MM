@@ -1,0 +1,28 @@
+local function getClosestBot()
+    local char = LocalPlayer.Character
+    if not char then return end
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    local closest
+    local dist = math.huge
+
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("Model") and v:FindFirstChild("Humanoid") 
+        and not Players:GetPlayerFromCharacter(v) then
+
+            local botHRP = v:FindFirstChild("HumanoidRootPart")
+            if botHRP then
+                local d = (botHRP.Position - hrp.Position).Magnitude
+                if d < dist then
+                    dist = d
+                    closest = botHRP
+                end
+            end
+        end
+    end
+
+    if dist <= _G.DangerDistance then
+        return closest
+    end
+end
